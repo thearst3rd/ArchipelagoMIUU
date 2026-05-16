@@ -1,5 +1,12 @@
 from dataclasses import dataclass
-from Options import Toggle, Choice, Range, DeathLink, PerGameCommonOptions
+from Options import Toggle, Choice, Range, DeathLink, PerGameCommonOptions, OptionGroup
+
+class EnableBlast(Toggle):
+    """
+    Allow the ability to Blast behind a useful item.
+    NOTE: Logic is NOT written with Blast in mind.
+    """
+    display_name = "Enable Blast"
 
 class MIUUDeathLink(DeathLink):
     """
@@ -14,6 +21,13 @@ class DeathLinkAmnesty(Range):
     range_start = 1
     range_end = 20
     default = 5
+
+class TreasureBoxSanity(Toggle):
+    """
+    Enables collecting Treasure Boxes as checks.
+    NOTE: Some Treasure Boxes require intentional death to collect. Be mindful of this if you are enabling Death Link.
+    """
+    display_name = "Treasureboxsanity"
 
 class MedalsPerChapter(Range):
     """
@@ -73,12 +87,69 @@ class FinalChapter(Choice):
     option_play_for_keeps = 3
     default = 0
 
+class TrapFillPercentage(Range):
+    """
+    Determine a percentage of junk items in the item pool to replace with traps.
+    """
+    display_name = "Trap Fill Percentage"
+    range_start = 0
+    range_end = 100
+    default = 0
+
+class AddTimeTrapWeight(Range):
+    """
+    This trap will instantly add 5 seconds to your current time.
+    """
+    display_name = "Add Time Trap Weight"
+    range_start = 0
+    range_end = 100
+    default = 0
+
+class CosmeticShuffleTrapWeight(Range):
+    """
+    This trap will randomly shuffle what cosmetics your marble is wearing.
+    """
+    display_name = "Add Time Trap Weight"
+    range_start = 0
+    range_end = 100
+    default = 0
+
 @dataclass
 class MIUUltraOptions(PerGameCommonOptions):
-    death_link: MIUUDeathLink
-    death_link_amnesty: DeathLinkAmnesty
     final_chapter: FinalChapter
+    bonus_arc_chapters: BonusArcChapters
+    medal_types: MedalTypes
     medals_per_chapter: MedalsPerChapter
     extra_medals: ExtraMedals
-    medal_types: MedalTypes
-    bonus_arc_chapters: BonusArcChapters
+    treasureboxsanity: TreasureBoxSanity
+    enable_blast: EnableBlast
+    death_link: MIUUDeathLink
+    death_link_amnesty: DeathLinkAmnesty
+    trap_percent: TrapFillPercentage
+    addtimetrap_weight: AddTimeTrapWeight
+    cosmetictrap_weight: CosmeticShuffleTrapWeight
+    
+
+miuu_option_groups = [
+    OptionGroup("Chapter Settings", [
+        MedalTypes,
+        FinalChapter,
+        BonusArcChapters
+    ]),
+    OptionGroup("Medal Settings", [
+        MedalsPerChapter,
+        ExtraMedals
+    ]),
+    OptionGroup("Trap Settings", [
+        TrapFillPercentage,
+        AddTimeTrapWeight,
+        CosmeticShuffleTrapWeight
+    ]),
+    OptionGroup("Game Settings", [
+        EnableBlast,
+        TreasureBoxSanity,
+        MIUUDeathLink,
+        DeathLinkAmnesty
+    ]),
+
+]

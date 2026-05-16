@@ -27,6 +27,8 @@ item_list: List[MIUUltraItem] = [
     MIUUltraItem("Feather Fall", ItemClassification.progression, ItemType.Powerup), 
     MIUUltraItem("Gravity Surfaces", ItemClassification.progression, ItemType.Powerup), 
     MIUUltraItem("Bounce Surfaces", ItemClassification.progression, ItemType.Powerup), 
+    MIUUltraItem("Blue Moving Platforms", ItemClassification.progression, ItemType.Powerup),
+    MIUUltraItem("Blast", ItemClassification.useful, ItemType.Powerup),
 
     #Medals
     MIUUltraItem("Completion Medal", ItemClassification.progression_deprioritized, ItemType.Medal),
@@ -34,6 +36,10 @@ item_list: List[MIUUltraItem] = [
 
     #Filler
     MIUUltraItem("5 Second Time Freeze", ItemClassification.filler, ItemType.Filler),
+
+    #Traps
+    MIUUltraItem("Time Add Trap", ItemClassification.trap, ItemType.Trap),
+    MIUUltraItem("Cosmetic Shuffle Trap", ItemClassification.trap, ItemType.Trap),
 
     MIUUltraItem("Final Level Complete", ItemClassification.progression_skip_balancing, ItemType.End),
 ]

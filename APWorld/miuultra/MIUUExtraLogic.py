@@ -1,6 +1,6 @@
 from typing import Optional
-from BaseClasses import CollectionState
 from .Options import MIUUltraOptions
+from rule_builder.rules import Rule, Has, True_
 
 class MIUUExtraLogic:
     player:int
@@ -10,22 +10,29 @@ class MIUUExtraLogic:
         self.player = player
         self.options = options
 
-    def has_medals(self, chapternumber, state:CollectionState) -> bool:
+    def has_medals(self, chapternumber) -> Rule:
         #Handle no options (first pass) or Chapter 1.
         if not self.options or chapternumber < 2:
-            return True
+            return True_()
         #Handle permanent 5 medals for Chapter 2.
         if chapternumber==2:
-            return state.has('Completion Medal', self.player, 5)
+            return Has("Completion Medal", count=5)
         #Calculate required medal count for chapters 3-6.
         medals = 5 + (self.options.medals_per_chapter.value * (chapternumber-2))
-        return state.has('Completion Medal', self.player, medals)
+        return Has("Completion Medal", count=medals)
     
-    def has_gold_medals(self, chapternumber, state:CollectionState) -> bool:
+    def has_gold_medals(self, chapternumber) -> Rule:
         if not self.options:
-            return True
+            return True_()
         goldmedals = self.options.medals_per_chapter.value * chapternumber
-        return state.has('Gold Completion Medal', self.player, goldmedals)
+        return Has("Gold Completion Medal", count=goldmedals)
+    
+    def has_all_gems(self, levelname, gemamount) -> Rule:
+        if not self.options:
+            return True_()
+        itemname = levelname + " Gem"
+        return Has(itemname, count=gemamount)
+    
 
         
         

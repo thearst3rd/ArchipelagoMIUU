@@ -42,4 +42,20 @@ namespace ArchipelagoMIUU.Patches
 
     }
 
+    //Handle cosmetic shuffle trap on the main Unity thread.
+    //TODO: I hate doing this. It was fine in holo8 but not so much here. Learn how to actually make this sort of thing threadsafe.
+    [HarmonyPatch(typeof(MarbleController), "Update")]
+    class MarbleController_Update_Patch
+    {
+        public static void Postfix(MarbleController __instance)
+        {
+            if (MiscHandler.shuffleTrapLatch)
+            {
+                __instance.ApplyMyCosmetics(runtimeUpdate: true);
+                CameraController.instance.player.ApplyMyCosmetics(runtimeUpdate: true);
+                MiscHandler.shuffleTrapLatch = false;
+            }
+        }
+    }
+
 }

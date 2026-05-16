@@ -9,6 +9,7 @@ namespace ArchipelagoMIUU.Patches
         public static bool Prefix()
         {
             ConnectHandler.ConnectToAP();
+            Plugin.LoadAPIcon();
             return true;
         }
     }

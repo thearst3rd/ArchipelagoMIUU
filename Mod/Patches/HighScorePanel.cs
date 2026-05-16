@@ -47,6 +47,10 @@ namespace ArchipelagoMIUU.Patches
             {
                 list.Add(new HighScorePanel.HighScore("Bounce Surfaces", "NA_LOCAL_ID", 0.0f, "", null, false));
             }
+            if(levelLogic[5] != -1 && levelLogic[4] <= LocationHandler.medalTypes)
+            {
+                list.Add(new HighScorePanel.HighScore("Blue Moving Platforms", "NA_LOCAL_ID", 0.0f, "", null, false));
+            }
             __instance.localScores = list;
             //Perform original code delegate
             GraphicRaycaster[] componentsInChildren = __instance.GetComponentsInChildren<GraphicRaycaster>();

@@ -45,7 +45,44 @@ namespace ArchipelagoMIUU.Patches
         public static bool Prefix()
         {
             MiscHandler.disallowDeathlink = true;
+            LevelSelect.instance.level.physModifiers.CanBlast = ItemHandler.powerupFlags["Blast"];
             return true;
+        }
+
+    }
+
+    //Handle egg.
+    [HarmonyPatch(typeof(MIU.GamePlayManager), "GotEgg")]
+    class MIUGamePlayManager_GotEgg_Patch
+    {
+        public static bool Prefix(MIU.GamePlayManager __instance, MarbleController marble)
+        {
+            if(LevelSelect.instance == null)
+            {
+                Debug.Log("Unable to send checks, as LevelSelect instance is null somehow");
+                return false;
+            }
+            MIU.MarbleLevel level = LevelSelect.instance.level;
+            string locid = level.id+"-tb";
+            if (!marble.isMyClientMarble())
+            {
+                if (LocationHandler.treasureboxsanity)
+                {
+                    if (ConnectHandler.Session.Locations.AllLocationsChecked.Contains(LocationHandler.locations[locid]))
+                    {
+                        Notification.Notify(Localization.TryTranslate("You already found this Treasure Box.", "Unlocks"), Localization.TryTranslate("Treasure Box Found!", "Unlocks"), 3.5f, Notification.instance.FoundEgg);
+                    }
+                    else
+                    {
+                        LocationHandler.CheckLocation(locid);
+                    }
+                }
+                else
+                {
+                    Notification.Notify("Treasure Boxes are not enabled in this multiworld.", Localization.TryTranslate("Treasure Box Found!", "Unlocks"), 3.5f, Plugin.APIcon);
+                }
+            }
+            return false;
         }
 
     }

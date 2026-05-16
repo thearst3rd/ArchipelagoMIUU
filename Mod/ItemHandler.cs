@@ -15,6 +15,8 @@ namespace ArchipelagoMIUU
             {"Feather Fall", false},
             {"Gravity Surfaces", false},
             {"Bounce Surfaces", false},
+            {"Blue Moving Platforms", false},
+            {"Blast", false}
         };
 
         public static int completionMedals = 0;
@@ -34,7 +36,44 @@ namespace ArchipelagoMIUU
           {"c4a", -1},
         };
 
-        public static void recieveItem(string itemName, string sender)
+        public static void recieveItem(string itemName, string sender, string colorData)
+        {
+            if (powerupFlags.ContainsKey(itemName))
+            {
+                powerupFlags[itemName] = true;
+                if (Notification.instance != null)
+                {
+                    string message = "Received " + itemName + " from " + sender; 
+                    if(sender == ConnectHandler.APSlot)
+                    {
+                        message = "You found your " + itemName;
+                    }
+                    Notification.Notify(message, "Archipelago", 4f, Notification.instance.FoundEgg);
+                }
+                return;
+            }
+            switch (itemName)
+            {
+                case "Completion Medal": completionMedals+=1;break;
+                case "Gold Completion Medal": goldCompletionMedals+=1;break;
+                case "5 Second Time Freeze": MiscHandler.doTimeTravelItem();break;
+                case "Time Add Trap": MiscHandler.doTimeAddTrap();break;
+                case "Cosmetic Shuffle Trap": MiscHandler.doCosmeticShuffleTrap();break; 
+                default: Debug.Log("Invalid item "+itemName+", ignoring.");break;
+            }
+            if (Notification.instance != null)
+            {
+                string message = "Received " + colorData + itemName + "</color> from " + sender; 
+                if(sender == ConnectHandler.APSlot)
+                {
+                    message = "You found your " + colorData + itemName + "</color>";
+                }
+                Notification.Notify(message, "Archipelago", 4f, Notification.instance.FoundEgg);
+            }
+        }
+
+        // Trimmed down version of above for item flushes.
+        public static void updateItem(string itemName)
         {
             if (powerupFlags.ContainsKey(itemName))
             {
@@ -45,17 +84,7 @@ namespace ArchipelagoMIUU
             {
                 case "Completion Medal": completionMedals+=1;break;
                 case "Gold Completion Medal": goldCompletionMedals+=1;break;
-                case "5 Second Time Freeze": MiscHandler.doTimeTravelItem();break; 
-                default: Debug.Log("Invalid item "+itemName+", ignoring.");break;
-            }
-            if (Notification.instance != null)
-            {
-                string message = "Received " + itemName + " from " + sender; 
-                if(sender == ConnectHandler.APSlot)
-                {
-                    message = "You found your " + itemName;
-                }
-                Notification.Notify(message, "Archipelago", 4f, Notification.instance.FoundEgg);
+                default: Debug.Log("Ignoring item " + itemName);break;
             }
         }
 
@@ -89,7 +118,7 @@ namespace ArchipelagoMIUU
         {
             int[] levelLogic = LocationHandler.internalLevelLogic[id];
             bool[] items = powerupFlags.Values.ToArray<bool>();
-            for(int i=0; i<items.Length; i++)
+            for(int i=0; i<items.Length-1; i++)
             {
                 if(levelLogic[i] != -1 && levelLogic[i] <= LocationHandler.medalTypes && !items[i])
                 {

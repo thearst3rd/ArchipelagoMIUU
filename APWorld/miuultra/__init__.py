@@ -1,11 +1,12 @@
 from typing import Dict, Any
 from worlds.AutoWorld import WebWorld, World
 from BaseClasses import Tutorial, Region, Location, Entrance, Item, ItemClassification
-from .Options import MIUUltraOptions, Choice
+from .Options import MIUUltraOptions, miuu_option_groups
 from .Items import base_id, item_list, ItemType
 from .Locations import get_location_data
 from .Regions import Regions
 import logging
+import rule_builder
 
 class MIUUltraWeb(WebWorld):
     theme = "ice"
@@ -17,6 +18,7 @@ class MIUUltraWeb(WebWorld):
         "miuultra/en",
         ["KitLemonfoot"]
     )]
+    option_groups = miuu_option_groups
 
 class MIUUltraItem(Item):
     game = "Marble It Up! Ultra"
@@ -71,8 +73,7 @@ class MIUUltraWorld(World):
             self.game_id_to_long[loc.game_id] = id
             region = self.get_region(loc.region.full_name)
             location = MIUUltraLocation(player, loc.name, id, region)
-            if loc.logic:
-                location.access_rule = loc.logic
+            self.set_rule(location, loc.logic)
             region.locations.append(location)
 
         if self.options.final_chapter.value == 0:
@@ -93,6 +94,8 @@ class MIUUltraWorld(World):
         #Medals and other items are handled manually.
         for item in item_list:
             if(item.itemType != ItemType.Powerup):
+                continue
+            if(item.name == "Blast" and not self.options.enable_blast.value):
                 continue
             pool.append(self.create_item(item.name))
 
@@ -126,21 +129,41 @@ class MIUUltraWorld(World):
             for _ in range(extraGold):
                 pool.append(self.create_item("Gold Completion Medal"))
 
-        # Handle filler items.
+        # Handle junk items.
         junk = len(self.multiworld.get_unfilled_locations(self.player)) - len(pool)
-        for _ in range(junk):
+        trap: int = round(junk * (self.options.trap_percent / 100))
+        filler = junk - trap
+        #Check weights.
+        if(self.options.addtimetrap_weight + self.options.cosmetictrap_weight == 0):
+            trap = 0
+        #Traps
+        for _ in range(trap):
+            pool.append(self.create_item(self.get_trap_name()))
+        #Filler
+        for _ in range(filler):
             pool.append(self.create_item("5 Second Time Freeze"))
 
         self.multiworld.itempool += pool
 
+    def get_trap_name(self):
+        trap_weights = {
+            "Time Add Trap": self.options.addtimetrap_weight,
+            "Cosmetic Shuffle Trap": self.options.cosmetictrap_weight
+        }
+        trap_items = list(trap_weights.keys())
+        return self.multiworld.random.choices(trap_items, weights=[trap_weights[i] for i in trap_items])[0]
+
+
     def fill_slot_data(self) -> Dict[str, Any]:
         slot_data: Dict[str, Any] = {
-            "version": "0.1.1",
+            "version": "0.2.0",
             "locations": self.game_id_to_long,
             "MedalsPerChapter": self.options.medals_per_chapter.value,
             "MedalTypes": self.options.medal_types.value,
             "FinalChapter": self.options.final_chapter.value,
             "BonusArcChapters": self.options.bonus_arc_chapters.value,
+            "EnableBlast": bool(self.options.enable_blast.value),
+            "Treasureboxsanity": bool(self.options.treasureboxsanity.value),
             "death_link": bool(self.options.death_link),
             "death_link_amnesty": self.options.death_link_amnesty.value
         }

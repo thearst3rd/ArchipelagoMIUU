@@ -23,4 +23,24 @@ namespace ArchipelagoMIUU.Patches
         }
     }
 
+    //Ghost playback stubbing
+    [HarmonyPatch(typeof(LevelSelect), "TryPlayMapGhost")]
+    class LevelSelect_TryPlayMapGhost_Patch
+    {
+        public static bool Prefix()
+        {
+            return false;
+        }
+    }
+
+    //Replay playback stubbing
+    [HarmonyPatch(typeof(LevelSelect), "TryPlayMapReplay")]
+    class LevelSelect_TryPlayMapReplay_Patch
+    {
+        public static bool Prefix()
+        {
+            return false;
+        }
+    }
+
 }

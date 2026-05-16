@@ -53,6 +53,7 @@ namespace ArchipelagoMIUU
 				Debug.Log("Successfully connected to server, setting up...");
 				Authenticated = true;
 				
+				flushItems();
 				Session.Items.ItemReceived += ItemReceived;
 
 				//Push locations
@@ -70,6 +71,7 @@ namespace ArchipelagoMIUU
 				LocationHandler.finalLevel = int.Parse(loginSuccess.SlotData["FinalChapter"].ToString());
 				LocationHandler.bonusArcLevel = int.Parse(loginSuccess.SlotData["BonusArcChapters"].ToString());
 				ItemHandler.medalsPerChapter = int.Parse(loginSuccess.SlotData["MedalsPerChapter"].ToString());
+				LocationHandler.treasureboxsanity = bool.Parse(loginSuccess.SlotData["Treasureboxsanity"].ToString());
 
 				//Setup deathlink
 				doingDeathlink = bool.Parse(loginSuccess.SlotData["death_link"].ToString());
@@ -115,12 +117,25 @@ namespace ArchipelagoMIUU
 			}
         }
 
+		public static void flushItems()
+		{
+			Debug.Log("Flushing items");
+			while (Session.Items.Any())
+			{
+				ItemInfo item = Session.Items.PeekItem();
+				string name = item.ItemName;
+				ItemHandler.updateItem(name);
+				Session.Items.DequeueItem();
+			}
+		}
+
         public static void ItemReceived(IReceivedItemsHelper helper){
 			ItemInfo item = helper.PeekItem();
 			string name = item.ItemName;
 			string sender = item.Player.Name;
+			string colorData = MiscHandler.getItemColor(item.Flags);
 			Debug.Log("Got item from AP: "+name);
-			ItemHandler.recieveItem(name, sender);
+			ItemHandler.recieveItem(name, sender, colorData);
 			helper.DequeueItem();
 		}
 

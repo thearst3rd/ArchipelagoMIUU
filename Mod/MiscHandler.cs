@@ -4,6 +4,7 @@ using UnityEngine;
 using BepInEx.Configuration;
 using MIU;
 using HarmonyLib;
+using Archipelago.MultiClient.Net.Enums;
 
 namespace ArchipelagoMIUU
 {
@@ -15,8 +16,35 @@ namespace ArchipelagoMIUU
         public static ConfigEntry<int> config_overrideDL;
         public static ConfigEntry<int> config_overrideDLAmnesty;
         public static bool disallowDeathlink = false;
+        public static bool shuffleTrapLatch = false;
 
         public static string connectString = "Not connected to Archipelago";
+
+        public static string getItemColor(ItemFlags flags)
+        {
+            switch (flags)
+            {
+                case ItemFlags.Advancement: return "<color=#DDA0DD>";
+                case ItemFlags.NeverExclude: return "<color=#6A5ACD>";
+                case ItemFlags.None: return "<color=#00FFFF>";
+                case ItemFlags.Trap: return "<color=#FA8072>";
+            }
+            return "<color=#FFFFFF>";
+        }
+
+        public static void doGrantBlast()
+        {
+            MarbleController[] array = GameProcess.ServerProcess.FindObjectsOfType<MarbleController>();
+            if (array.Length == 0)
+            {
+                UnityEngine.Debug.Log("Failed to find any marbles to grant Blast to.");
+                return;
+            }
+            foreach(MarbleController marble in array)
+            {
+                marble.physMod.CanBlast = true;
+            }
+        }
 
         public static void doTimeTravelItem()
         {
@@ -30,6 +58,35 @@ namespace ArchipelagoMIUU
             {
                 marble.AddTimeCredit(5f);
             }
+        }
+
+        public static void doTimeAddTrap()
+        {
+            MarbleController[] array = GameProcess.ServerProcess.FindObjectsOfType<MarbleController>();
+            if (array.Length == 0)
+            {
+                UnityEngine.Debug.Log("Failed to find any marbles to take time away from.");
+                return;
+            }
+            foreach(MarbleController marble in array)
+            {
+                marble.elapsedTime = marble.elapsedTime + 5f;
+            }
+        }
+
+        public static void doCosmeticShuffleTrap()
+        {
+            Cosmetic skin = CosmeticManager.Skins[UnityEngine.Random.Range(0, CosmeticManager.Skins.Length)];
+            Cosmetic trail = CosmeticManager.Trails[UnityEngine.Random.Range(0, CosmeticManager.Trails.Length)];
+            Cosmetic hat = CosmeticManager.Hats[UnityEngine.Random.Range(0, CosmeticManager.Hats.Length)];
+            CosmeticManager.MySkin = skin;
+            CosmeticManager.MyTrail = trail;
+            CosmeticManager.MyHat = hat;
+            if (GamePlayManager.Get().IsPlaying)
+			{
+				shuffleTrapLatch = true;
+			}
+            
         }
 
         public static void killMarbles()
