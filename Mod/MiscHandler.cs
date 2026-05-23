@@ -24,7 +24,7 @@ namespace ArchipelagoMIUU
             MarbleController[] array = GameProcess.ServerProcess.FindObjectsOfType<MarbleController>();
             if (array.Length == 0)
             {
-                UnityEngine.Debug.Log("Failed to find any marbles to give time travel credit to.");
+                Log("Failed to find any marbles to give time travel credit to.");
                 return;
             }
             foreach(MarbleController marble in array)
@@ -38,7 +38,7 @@ namespace ArchipelagoMIUU
             MarbleController[] array = GameProcess.ServerProcess.FindObjectsOfType<MarbleController>();
             if (array.Length == 0)
             {
-                UnityEngine.Debug.Log("Failed to find any marbles to kill.");
+                Log("Failed to find any marbles to kill.");
                 return;
             }
             foreach(MarbleController marble in array)
@@ -78,6 +78,12 @@ namespace ArchipelagoMIUU
             MiscHandler.connectString = connectString;
             if (MainMenuPanel.instance && MainMenuPanel.instance.XBoxUserName)
                 MainMenuPanel.instance.XBoxUserName.text = "ArchipelagoMIUU Mod " + VERSION + "\n" + connectString;
+        }
+
+        public static void Log(string message)
+        {
+            message = "[ARCHIPELAGO] " + message;
+            Debug.Log(message);
         }
     }
 }

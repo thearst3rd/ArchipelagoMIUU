@@ -45,12 +45,12 @@ namespace ArchipelagoMIUU
             {
                 case "Completion Medal": completionMedals+=1;break;
                 case "Gold Completion Medal": goldCompletionMedals+=1;break;
-                case "5 Second Time Freeze": MiscHandler.doTimeTravelItem();break; 
-                default: Debug.Log("Invalid item "+itemName+", ignoring.");break;
+                case "5 Second Time Freeze": MiscHandler.doTimeTravelItem();break;
+                default: MiscHandler.Log("Invalid item "+itemName+", ignoring.");break;
             }
             if (Notification.instance != null)
             {
-                string message = "Received " + itemName + " from " + sender; 
+                string message = "Received " + itemName + " from " + sender;
                 if(sender == ConnectHandler.APSlot)
                 {
                     message = "You found your " + itemName;

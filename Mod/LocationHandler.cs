@@ -13,14 +13,14 @@ namespace ArchipelagoMIUU
 
         /// Used for the ingame tracker. All other logic is handled by the apworld.
         /// Note: this will be expanded later to include gems and other items
-        /// 
+        ///
         /// Index:
         /// 0: Super Jump
         /// 1: Boost
         /// 2: Feather Fall
         /// 3: Gravity Surfaces
         /// 4: Bounce Surfaces
-        /// 
+        ///
         /// Value:
         /// -1: Not needed
         /// 0: Needed for base completion
@@ -163,7 +163,7 @@ namespace ArchipelagoMIUU
                 {
                     return;
                 }
-				Debug.Log("Checking location: "+loc);
+				MiscHandler.Log("Checking location: "+loc);
 				ConnectHandler.Session.Locations.CompleteLocationChecksAsync(locations[loc]);
                 //Send notification.
                 if (Notification.instance != null)
@@ -171,13 +171,13 @@ namespace ArchipelagoMIUU
                     string message = "";
                     if(scoutedLocations[locations[loc]].Player.Name != ConnectHandler.APSlot)
                     {
-                        message = "Sent " + scoutedLocations[locations[loc]].ItemName + " to " + scoutedLocations[locations[loc]].Player.Name; 
+                        message = "Sent " + scoutedLocations[locations[loc]].ItemName + " to " + scoutedLocations[locations[loc]].Player.Name;
                         Notification.Notify(message, "Archipelago", 4f, Notification.instance.Egg);
                     }
                 }
-                
+
 			}
-			else Debug.Log("Location \"" + loc + "\" does not exist or you are not connected to AP.");
+			else MiscHandler.Log("Location \"" + loc + "\" does not exist or you are not connected to AP.");
         }
 
         public static bool isLocationChecked(string loc)
@@ -190,7 +190,7 @@ namespace ArchipelagoMIUU
         }
 
         public static void SentCheck(bool t)
-        {    
+        {
         }
     }
 }
