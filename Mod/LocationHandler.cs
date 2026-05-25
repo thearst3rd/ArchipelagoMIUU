@@ -165,7 +165,7 @@ namespace ArchipelagoMIUU
                 {
                     return;
                 }
-				Debug.Log("Checking location: "+loc);
+				MiscHandler.Log("Checking location: "+loc);
 				ConnectHandler.Session.Locations.CompleteLocationChecksAsync(locations[loc]);
                 //Send notification.
                 if (Notification.instance != null)
@@ -179,7 +179,7 @@ namespace ArchipelagoMIUU
                 }
 
 			}
-			else Debug.Log("Location \"" + loc + "\" does not exist or you are not connected to AP.");
+			else MiscHandler.Log("Location \"" + loc + "\" does not exist or you are not connected to AP.");
         }
 
         public static bool isLocationChecked(string loc)

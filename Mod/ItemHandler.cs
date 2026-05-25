@@ -59,7 +59,7 @@ namespace ArchipelagoMIUU
                 case "5 Second Time Freeze": MiscHandler.doTimeTravelItem();break;
                 case "Time Add Trap": MiscHandler.doTimeAddTrap();break;
                 case "Cosmetic Shuffle Trap": MiscHandler.doCosmeticShuffleTrap();break;
-                default: Debug.Log("Invalid item "+itemName+", ignoring.");break;
+                default: MiscHandler.Log("Invalid item "+itemName+", ignoring.");break;
             }
             if (Notification.instance != null)
             {
@@ -84,7 +84,7 @@ namespace ArchipelagoMIUU
             {
                 case "Completion Medal": completionMedals+=1;break;
                 case "Gold Completion Medal": goldCompletionMedals+=1;break;
-                default: Debug.Log("Ignoring item " + itemName);break;
+                default: MiscHandler.Log("Ignoring item " + itemName);break;
             }
         }
 
