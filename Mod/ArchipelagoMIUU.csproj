@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyName>ArchipelagoMIUU</AssemblyName>
     <Product>Marble It Up! Ultra Archipelago</Product>
     <Version>0.2.0</Version>
@@ -15,8 +15,25 @@
     <RootNamespace>ArchipelagoMIUU</RootNamespace>
   </PropertyGroup>
 
+  <Import Project="$(ProjectDir)UserProperties.xml" />
+
+  <Target Name="VerifyModReferences" BeforeTargets="Build">
+    <Error Text="You forgot to create/edit UserProperties.xml. Copy UserProperties.xml.template and configure it with necessary changes." Condition="$(UserPropertiesSetUp) != True" />
+  </Target>
+
+  <Target Name="InstallMod" AfterTargets="Build">
+    <PropertyGroup>
+      <ModCompileOutputDir Condition="'$(ModOutputDir)' == ''">$(ProjectDir)out\</ModCompileOutputDir>
+      <ModCompileOutputDir Condition="'$(ModOutputDir)' != ''">$(ModOutputDir)\</ModCompileOutputDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(ModCompileOutputDir)" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).dll" DestinationFolder="$(ModCompileOutputDir)\" />
+    <Copy SourceFiles="$(PkgArchipelago_MultiClient_Net)\lib\net45\Archipelago.MultiClient.Net.dll" DestinationFolder="$(ModCompileOutputDir)" Retries="0" />
+    <Copy SourceFiles="$(PkgArchipelago_MultiClient_Net)\lib\net45\Newtonsoft.Json.dll" DestinationFolder="$(ModCompileOutputDir)" Retries="0" />
+  </Target>
+
   <ItemGroup>
-    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.1" />
+    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.1" GeneratePathProperty="true" />
 	<PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
@@ -29,13 +46,13 @@
 
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>lib\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(GameDataDir)\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>lib\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(GameDataDir)\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>lib\Unity.TextMeshPro.dll</HintPath>
+      <HintPath>$(GameDataDir)\Managed\Unity.TextMeshPro.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
