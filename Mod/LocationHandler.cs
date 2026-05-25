@@ -174,7 +174,7 @@ namespace ArchipelagoMIUU
                     if(scoutedLocations[locations[loc]].Player.Name != ConnectHandler.APSlot)
                     {
                         message = "Sent " + MiscHandler.getItemColor(scoutedLocations[locations[loc]].Flags) + scoutedLocations[locations[loc]].ItemName + "</color> to " + scoutedLocations[locations[loc]].Player.Name;
-                        Notification.Notify(message, "Archipelago", 4f, Plugin.APIcon);
+                        Notification.Notify(message, "Archipelago", 4f, Assets.APIcon);
                     }
                 }
 

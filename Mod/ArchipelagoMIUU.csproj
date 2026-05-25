@@ -7,11 +7,6 @@
     <Version>0.2.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
-    <RestoreAdditionalProjectSources>
-      https://api.nuget.org/v3/index.json;
-      https://nuget.bepinex.dev/v3/index.json;
-      https://nuget.samboy.dev/v3/index.json
-    </RestoreAdditionalProjectSources>
     <RootNamespace>ArchipelagoMIUU</RootNamespace>
   </PropertyGroup>
 
@@ -28,16 +23,13 @@
     </PropertyGroup>
     <MakeDir Directories="$(ModCompileOutputDir)" />
     <Copy SourceFiles="$(TargetDir)$(TargetName).dll" DestinationFolder="$(ModCompileOutputDir)\" />
+    <Copy SourceFiles="$(ProjectDir)Assets\Archipelago.png" DestinationFolder="$(ModCompileOutputDir)\" />
     <Copy SourceFiles="$(PkgArchipelago_MultiClient_Net)\lib\net45\Archipelago.MultiClient.Net.dll" DestinationFolder="$(ModCompileOutputDir)" Retries="0" />
     <Copy SourceFiles="$(PkgArchipelago_MultiClient_Net)\lib\net45\Newtonsoft.Json.dll" DestinationFolder="$(ModCompileOutputDir)" Retries="0" />
   </Target>
 
   <ItemGroup>
     <PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.1" GeneratePathProperty="true" />
-	<PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
-    <PackageReference Include="BepInEx.Core" Version="5.*" />
-    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
-    <PackageReference Include="UnityEngine.Modules" Version="2020.3.44" IncludeAssets="compile" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
@@ -45,11 +37,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(GameDir)\Mods\ModLoader\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(GameDataDir)\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(GameDataDir)\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(GameDataDir)\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>$(GameDataDir)\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>$(GameDataDir)\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(GameDataDir)\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>$(GameDataDir)\Managed\UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>$(GameDataDir)\Managed\Unity.TextMeshPro.dll</HintPath>

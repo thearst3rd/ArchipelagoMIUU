@@ -79,7 +79,7 @@ namespace ArchipelagoMIUU.Patches
                 }
                 else
                 {
-                    Notification.Notify("Treasure Boxes are not enabled in this multiworld.", Localization.TryTranslate("Treasure Box Found!", "Unlocks"), 3.5f, Plugin.APIcon);
+                    Notification.Notify("Treasure Boxes are not enabled in this multiworld.", Localization.TryTranslate("Treasure Box Found!", "Unlocks"), 3.5f, Assets.APIcon);
                 }
             }
             return false;

@@ -21,15 +21,17 @@ namespace ArchipelagoMIUU
         public static string APserver = null;
 		public static string APSlot = null;
 		public static bool doingDeathlink = false;
+		public static bool doingDeathlinkYaml = false;
 		public static int deathAmnesty = 0;
 		public static int deathAmnestyMax = 15;
+		public static int deathAmnestyMaxYaml = 15;
 		public static DeathLinkService deathLinkService = null;
 
         public static void ConnectToAP(){
 			MiscHandler.Log("Trying to connect to AP. Please wait...");
 			LoginResult result;
-			APSlot = MiscHandler.config_APslot.Value;
-			APserver = MiscHandler.config_APip.Value;
+			APSlot = MiscHandler.config_APslot;
+			APserver = MiscHandler.config_APip;
 
 			try{
 				Session = ArchipelagoSessionFactory.CreateSession(APserver);
@@ -41,7 +43,7 @@ namespace ArchipelagoMIUU
 					new Version(0,6,7),
 					null,
 					null,
-					MiscHandler.config_APpassword.Value == "" ? null : MiscHandler.config_APpassword.Value,
+					MiscHandler.config_APpassword == "" ? null : MiscHandler.config_APpassword,
 					true
 				);
 			}
@@ -74,18 +76,20 @@ namespace ArchipelagoMIUU
 				LocationHandler.treasureboxsanity = bool.Parse(loginSuccess.SlotData["Treasureboxsanity"].ToString());
 
 				//Setup deathlink
-				doingDeathlink = bool.Parse(loginSuccess.SlotData["death_link"].ToString());
+				doingDeathlinkYaml = bool.Parse(loginSuccess.SlotData["death_link"].ToString());
+				doingDeathlink = doingDeathlinkYaml;
 				deathAmnesty = 0;
-				deathAmnestyMax = int.Parse(loginSuccess.SlotData["death_link_amnesty"].ToString());
+				deathAmnestyMaxYaml = int.Parse(loginSuccess.SlotData["death_link_amnesty"].ToString());
+				deathAmnestyMax = deathAmnestyMaxYaml;
 				deathLinkService = Session.CreateDeathLinkService();
-				if(MiscHandler.config_overrideDL.Value != -1)
+				if(MiscHandler.config_overrideDL != -1)
 				{
-					doingDeathlink = MiscHandler.config_overrideDL.Value>=1;
+					doingDeathlink = MiscHandler.config_overrideDL >= 1;
 					MiscHandler.Log("DL overwritten with "+doingDeathlink);
 				}
-				if(MiscHandler.config_overrideDLAmnesty.Value > 0)
+				if(MiscHandler.config_overrideDLAmnesty > 0)
 				{
-					deathAmnestyMax = Math.Min(20, MiscHandler.config_overrideDLAmnesty.Value);
+					deathAmnestyMax = Math.Min(20, MiscHandler.config_overrideDLAmnesty);
 					MiscHandler.Log("DL amnesty overwritten with "+deathAmnestyMax);
 				}
 
@@ -95,7 +99,7 @@ namespace ArchipelagoMIUU
 					deathLinkService.OnDeathLinkReceived += DeathLinkRecieved;
 				}
 
-				MiscHandler.connectString = "Connected to "+APserver;
+				MiscHandler.SetConnectString("Connected to " + APserver);
 				ItemHandler.calculateRequiredMedals();
 
 				MiscHandler.Log("Successfully set up a connection to Archipelago. Let's play!");
@@ -112,6 +116,7 @@ namespace ArchipelagoMIUU
 					errorMessage += $"{error}";
 				}
 				MiscHandler.Log(errorMessage);
+				MiscHandler.SetConnectString(errorMessage);
 				Session = null;
 				return;
 			}
