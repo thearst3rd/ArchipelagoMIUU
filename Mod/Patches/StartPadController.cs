@@ -34,7 +34,7 @@ namespace ArchipelagoMIUU.Patches
                     }
                 }
             }
-            
+
         }
     }
 

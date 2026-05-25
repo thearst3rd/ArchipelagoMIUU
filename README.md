@@ -40,7 +40,7 @@ You will need the following:
 -   [BepInEx x64 5.4.23.x](https://github.com/BepInEx/BepInEx/releases)
 
 ### Installing
-1. Navigate to Marble It Up! Ultra's local file directory. This can be found by right-clicking on the game in your Steam Library, selecting *Manage*, then selecting *Browse Local Files*. 
+1. Navigate to Marble It Up! Ultra's local file directory. This can be found by right-clicking on the game in your Steam Library, selecting *Manage*, then selecting *Browse Local Files*.
 2. Install BepInEx to your copy of Marble It Up! Ultra. The guide to do so can be found [in their User Guide.](https://docs.bepinex.dev/articles/user_guide/installation/index.html)
 3. Install the contents of `MIUU_Patches.zip` to the BepInEx folder. You should have two folders in the BepInEx folder: `core` and `plugins`.
 4. Run the game to generate BepInEx's and the mod's config data.
@@ -54,7 +54,7 @@ You will need the following:
 All further instructions can be found in the [official Archipelago Setup Guide](https://archipelago.gg/tutorial/Archipelago/setup/en#on-your-local-installation).
 
 ### Connection
-1. In the `ArchipelagoMIUU.cfg` file in the `BepInEx\config` folder, enter your Archipelago server's IP address, your slot name, and your server's password if any. 
+1. In the `ArchipelagoMIUU.cfg` file in the `BepInEx\config` folder, enter your Archipelago server's IP address, your slot name, and your server's password if any.
 	- You may also override your YAML's Death Link and Death Link Amnesty settings in this file if you wish .
 2. Start Marble It Up! Ultra. The game should connect to the Archipelago server automatically during startup.
 3. Your Archipelago server IP should be displayed in the top right corner of the main menu if the connection was successful.

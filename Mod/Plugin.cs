@@ -12,7 +12,7 @@ public class Plugin : BaseUnityPlugin
 {
     internal static new ManualLogSource Logger;
     public static Sprite APIcon;
-        
+
     private void Awake()
     {
         MiscHandler.setConfig(base.Config);

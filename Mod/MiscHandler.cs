@@ -86,7 +86,7 @@ namespace ArchipelagoMIUU
 			{
 				shuffleTrapLatch = true;
 			}
-            
+
         }
 
         public static void killMarbles()

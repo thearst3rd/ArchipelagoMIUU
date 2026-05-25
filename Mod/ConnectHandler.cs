@@ -30,13 +30,13 @@ namespace ArchipelagoMIUU
 			LoginResult result;
 			APSlot = MiscHandler.config_APslot.Value;
 			APserver = MiscHandler.config_APip.Value;
-			
+
 			try{
 				Session = ArchipelagoSessionFactory.CreateSession(APserver);
-				
+
 				result = Session.TryConnectAndLogin(
-					"Marble It Up! Ultra", 
-					APSlot, 
+					"Marble It Up! Ultra",
+					APSlot,
 					ItemsHandlingFlags.AllItems,
 					new Version(0,6,7),
 					null,
@@ -52,7 +52,7 @@ namespace ArchipelagoMIUU
 			{
 				Debug.Log("Successfully connected to server, setting up...");
 				Authenticated = true;
-				
+
 				flushItems();
 				Session.Items.ItemReceived += ItemReceived;
 
