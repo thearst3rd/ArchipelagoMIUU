@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.1" GeneratePathProperty="true"/>
-    <PackageReference Include="UnityEngine.Modules" Version="2020.3.44" IncludeAssets="compile" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
@@ -43,8 +42,20 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>$(GameDataDir)\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(GameDataDir)\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(GameDataDir)\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>$(GameDataDir)\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(GameDataDir)\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>$(GameDataDir)\Managed\UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>$(GameDataDir)\Managed\Unity.TextMeshPro.dll</HintPath>
