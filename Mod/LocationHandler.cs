@@ -153,7 +153,13 @@ namespace ArchipelagoMIUU
         public static int ultraArcChapters = 0;
         public static int bonusArcChapters = 0;
 
-        public static int medalTypes = 0;
+        public static bool bronzeMedals = false;
+        public static bool silverMedals = false;
+        public static bool goldMedals = false;
+        public static bool diamondMedals = false;
+
+        public static int lowestMedalType = 0;
+        public static int highestMedalType = 0;
 
         public static bool treasureboxsanity = false;
         public static string[] ultraEndLocations = {"leaf_on_the_wind", "steppingstones_update", "overclocked_update", "citadel", "mobiusmadness_v2", "apogee_v2"};
@@ -196,12 +202,19 @@ namespace ArchipelagoMIUU
         public static void CheckForCompletion()
         {
             //Send goal on last level
+            string suffix = "-c";
+            if (lowestMedalType == 1)
+                suffix = "-s";
+            else if (lowestMedalType == 2)
+                suffix = "-g";
+            else if (lowestMedalType == 3)
+                suffix = "-d";
             bool ultraCompleted = true;
             if (goalArc == 0 || goalArc == 2)
-                ultraCompleted = isLocationChecked(ultraEndLocations[ultraArcChapters - 1] + "-c");
+                ultraCompleted = isLocationChecked(ultraEndLocations[ultraArcChapters - 1] + suffix);
             bool bonusCompleted = true;
             if (goalArc == 1 || goalArc == 2)
-                bonusCompleted = isLocationChecked(bonusEndLocations[bonusArcChapters - 1] + "-c");
+                bonusCompleted = isLocationChecked(bonusEndLocations[bonusArcChapters - 1] + suffix);
 
             if (ultraCompleted && bonusCompleted)
                 ConnectHandler.SendCompletion();

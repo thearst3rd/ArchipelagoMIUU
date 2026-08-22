@@ -79,27 +79,36 @@ class MIUUltraWorld(World):
             self.set_rule(location, loc.logic)
             region.locations.append(location)
 
+        target = ""
+        if self.options.bronze_medals.value:
+            target = " Complete"
+        elif self.options.silver_medals.value:
+            target = " Silver Medal"
+        elif self.options.gold_medals.value:
+            target = " Gold Medal"
+        else:
+            target = " Diamond Medal"
         goal_items = []
 
         if self.options.goal_arc.value in [0, 2]:
             if self.options.ultra_arc_chapters.value == 3:
-                ultra_victory = self.get_location("Overclocked Complete")
+                ultra_victory = self.get_location("Overclocked" + target)
             if self.options.ultra_arc_chapters.value == 4:
-                ultra_victory = self.get_location("Citadel Complete")
+                ultra_victory = self.get_location("Citadel" + target)
             if self.options.ultra_arc_chapters.value == 5:
-                ultra_victory = self.get_location("Mobius Madness Complete")
+                ultra_victory = self.get_location("Mobius Madness" + target)
             if self.options.ultra_arc_chapters.value == 6:
-                ultra_victory = self.get_location("Apogee Complete")
+                ultra_victory = self.get_location("Apogee" + target)
             ultra_victory.place_locked_item(self.create_item("Ultra Arc Complete"))
             goal_items.append("Ultra Arc Complete")
 
         if self.options.goal_arc.value in [1, 2]:
             if self.options.bonus_arc_chapters.value == 2:
-                bonus_victory = self.get_location("The Pit of Despair Complete")
+                bonus_victory = self.get_location("The Pit of Despair" + target)
             if self.options.bonus_arc_chapters.value == 3:
-                bonus_victory = self.get_location("Zenith Complete")
+                bonus_victory = self.get_location("Zenith" + target)
             if self.options.bonus_arc_chapters.value == 4:
-                bonus_victory = self.get_location("Stratosphere Complete")
+                bonus_victory = self.get_location("Stratosphere" + target)
             bonus_victory.place_locked_item(self.create_item("Bonus Arc Complete"))
             goal_items.append("Bonus Arc Complete")
 
@@ -179,7 +188,10 @@ class MIUUltraWorld(World):
             "version": "0.2.0",
             "locations": self.game_id_to_long,
             "MedalsPerChapter": self.options.medals_per_chapter.value,
-            "MedalTypes": self.options.medal_types.value,
+            "BronzeMedals": bool(self.options.bronze_medals.value),
+            "SilverMedals": bool(self.options.silver_medals.value),
+            "GoldMedals": bool(self.options.gold_medals.value),
+            "DiamondMedals": bool(self.options.diamond_medals.value),
             "GoalArc": self.options.goal_arc.value,
             "UltraArcChapters": self.options.ultra_arc_chapters.value,
             "BonusArcChapters": self.options.bonus_arc_chapters.value,
