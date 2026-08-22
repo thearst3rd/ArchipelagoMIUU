@@ -98,6 +98,11 @@ namespace ArchipelagoMIUU
 				else
 					LocationHandler.lowestMedalType = 3;
 
+				if (LocationHandler.goalArc == 0)
+					ItemHandler.bonusArcComplete = true;
+				if (LocationHandler.goalArc == 1)
+					ItemHandler.ultraArcComplete = true;
+
 				//Setup deathlink
 				doingDeathlinkYaml = bool.Parse(loginSuccess.SlotData["death_link"].ToString());
 				doingDeathlink = doingDeathlinkYaml;
