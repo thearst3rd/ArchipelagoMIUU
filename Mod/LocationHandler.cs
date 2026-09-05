@@ -158,7 +158,6 @@ namespace ArchipelagoMIUU
         public static bool goldMedals = false;
         public static bool diamondMedals = false;
 
-        public static int lowestMedalType = 0;
         public static int highestMedalType = 0;
 
         public static bool treasureboxsanity = false;

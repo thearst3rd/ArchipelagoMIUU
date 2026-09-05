@@ -90,15 +90,6 @@ namespace ArchipelagoMIUU
 				else
 					LocationHandler.highestMedalType = 0;
 
-				if (LocationHandler.bronzeMedals)
-					LocationHandler.lowestMedalType = 0;
-				else if (LocationHandler.silverMedals)
-					LocationHandler.lowestMedalType = 1;
-				else if (LocationHandler.goldMedals)
-					LocationHandler.lowestMedalType = 2;
-				else
-					LocationHandler.lowestMedalType = 3;
-
 				if (LocationHandler.goalArc == 0)
 					ItemHandler.bonusArcComplete = true;
 				if (LocationHandler.goalArc == 1)
