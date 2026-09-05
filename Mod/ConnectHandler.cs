@@ -70,10 +70,11 @@ namespace ArchipelagoMIUU
                 LocationHandler.scoutedLocations = scoutTask.Result;
 
 				//Get YAML settings.
-				LocationHandler.bronzeMedals = bool.Parse(loginSuccess.SlotData["BronzeMedals"].ToString());
-				LocationHandler.silverMedals = bool.Parse(loginSuccess.SlotData["SilverMedals"].ToString());
-				LocationHandler.goldMedals = bool.Parse(loginSuccess.SlotData["GoldMedals"].ToString());
-				LocationHandler.diamondMedals = bool.Parse(loginSuccess.SlotData["DiamondMedals"].ToString());
+				List<string> medals = ((JArray)loginSuccess.SlotData["MedalTypes"]).ToObject<List<string>>();
+				LocationHandler.bronzeMedals = medals.Contains("Bronze");
+				LocationHandler.silverMedals = medals.Contains("Silver");
+				LocationHandler.goldMedals = medals.Contains("Gold");
+				LocationHandler.diamondMedals = medals.Contains("Diamond");
 				LocationHandler.goalArc = int.Parse(loginSuccess.SlotData["GoalArc"].ToString());
 				LocationHandler.ultraArcChapters = int.Parse(loginSuccess.SlotData["UltraArcChapters"].ToString());
 				LocationHandler.bonusArcChapters = int.Parse(loginSuccess.SlotData["BonusArcChapters"].ToString());

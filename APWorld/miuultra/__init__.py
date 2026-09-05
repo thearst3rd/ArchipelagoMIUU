@@ -53,6 +53,9 @@ class MIUUltraWorld(World):
         if self.options.goal_arc.value in [1, 2] and self.options.bonus_arc_chapters.value < 2:
             logging.warning(f"Player {self.player_name} tried to have a Bonus Arc goal without adequate chapters. Enabling enough chapters.")
             self.options.bonus_arc_chapters.value = 2
+        if len(self.options.medal_types.value) == 0:
+            logging.warning(f"Player {self.player_name} did not enable any medal types! Enabling bronze medals.")
+            self.options.medal_types.value.add("Bronze")
 
     def create_item(self, name:str) -> MIUUltraItem:
         item_id: int = self.item_name_to_id[name]
@@ -80,11 +83,11 @@ class MIUUltraWorld(World):
             region.locations.append(location)
 
         target = ""
-        if self.options.bronze_medals.value:
+        if "Bronze" in self.options.medal_types.value:
             target = " Complete"
-        elif self.options.silver_medals.value:
+        elif "Silver" in self.options.medal_types.value:
             target = " Silver Medal"
-        elif self.options.gold_medals.value:
+        elif "Gold" in self.options.medal_types.value:
             target = " Gold Medal"
         else:
             target = " Diamond Medal"
@@ -188,10 +191,7 @@ class MIUUltraWorld(World):
             "version": "0.2.0",
             "locations": self.game_id_to_long,
             "MedalsPerChapter": self.options.medals_per_chapter.value,
-            "BronzeMedals": bool(self.options.bronze_medals.value),
-            "SilverMedals": bool(self.options.silver_medals.value),
-            "GoldMedals": bool(self.options.gold_medals.value),
-            "DiamondMedals": bool(self.options.diamond_medals.value),
+            "MedalTypes": self.options.medal_types.value,
             "GoalArc": self.options.goal_arc.value,
             "UltraArcChapters": self.options.ultra_arc_chapters.value,
             "BonusArcChapters": self.options.bonus_arc_chapters.value,
